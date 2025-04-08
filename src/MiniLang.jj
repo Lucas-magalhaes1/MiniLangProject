@@ -1,0 +1,276 @@
+options {
+  STATIC = false;
+  JDK_VERSION = "1.5";
+}
+
+PARSER_BEGIN(MiniLang)
+
+import java.io.*;
+
+public class MiniLang {
+  public static void main(String[] args) throws ParseException {
+    try {
+      System.out.println("Lendo arquivo fonte...");
+      FileInputStream fis = new FileInputStream(new File("src/fonte.txt"));
+      MiniLang parser = new MiniLang(fis);
+      parser.Start();
+      System.out.println("Arquivo fonte processado corretamente!");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+PARSER_END(MiniLang)
+
+SKIP : {
+  " " | "\t" | "\n" | "\r"
+}
+
+MORE : {
+  < "//" (~["\n"])* "\n" >
+}
+
+TOKEN : {
+  < INCLUDE : "#include" >
+| < MAIN : "main" >
+| < RETURN : "return" >
+| < INT : "int" >
+| < STRING : "string" >
+| < BOOLEAN : "boolean" >
+| < CONST : "const" >
+| < VOID : "void" >
+| < IF : "if" >
+| < ELSE : "else" >
+| < FOR : "for" >
+| < WHILE : "while" >
+| < FOREACH : "foreach" >
+| < IN : "in" >
+| < BREAK : "break" >
+| < CONTINUE : "continue" >
+| < WRITE : "write" >
+| < GETINT : "getInt" >
+| < GETTEXT : "getText" >
+| < FUNCTION : "function" >
+| < TRUE : "true" >
+| < FALSE : "false" >
+| < AND : "&&" >
+| < OR : "||" >
+| < NOT : "!" >
+| < PLUSPLUS : "++" >
+| < MINUSMINUS : "--" >
+
+// Operadores
+| < EQ : "=" >
+| < EQEQ : "==" >
+| < PLUS : "+" >
+| < MINUS : "-" >
+| < MULT : "*" >
+| < DIV : "/" >
+| < LT : "<" >
+| < GT : ">" >
+| < LE : "<=" >
+| < GE : ">=" >
+
+// Separadores
+| < SEMI : ";" >
+| < COMMA : "," >
+| < LPAREN : "(" >
+| < RPAREN : ")" >
+| < LBRACE : "{" >
+| < RBRACE : "}" >
+| < LBRACK : "[" >
+| < RBRACK : "]" >
+| < LTEXT : "<" (~[">"])* ">" >
+
+// Literais
+| < NUMBER : (["0"-"9"])+ >
+| < STRING_LITERAL : "\"" (~["\""])* "\"" >
+
+// Identificadores
+| < ID : (["a"-"z","A"-"Z"]) (["a"-"z","A"-"Z","0"-"9","_"])* >
+}
+
+void Start() : {} {
+  (IncludeDecl())*
+  MainMethod()
+  (FunctionDecl())*
+  <EOF>
+}
+
+void IncludeDecl() : {} {
+  <INCLUDE> <LTEXT> { System.out.println("Reconheceu inclusão de biblioteca"); }
+}
+
+void MainMethod() : {} {
+  <INT> <MAIN> <LPAREN> <RPAREN> Block()
+  { System.out.println("Reconheceu método main"); }
+}
+
+void Block() : {} {
+  <LBRACE> (Statement())* <RBRACE>
+}
+
+void Statement() : {} {
+  LOOKAHEAD(3) VariableDecl()
+| LOOKAHEAD(2) Assignment()
+| Input()
+| Output()
+| IfStatement()
+| WhileLoop()
+| ForLoop()
+| ForeachLoop()
+| BreakStmt()
+| ContinueStmt()
+| FunctionDecl()
+| FunctionCall()
+| ReturnStmt()
+}
+
+void VariableDecl() : {} {
+  [ <CONST> ] ( <INT> | <STRING> | <BOOLEAN> ) <ID> ( <EQ> Expression() )? <SEMI>
+  { System.out.println("Reconheceu declaração de variável"); }
+}
+
+void Assignment() : {} {
+  <ID>
+  (
+    <EQ> Expression()
+  |
+    <PLUSPLUS>
+  |
+    <MINUSMINUS>
+  )
+  <SEMI>
+  { System.out.println("Reconheceu atribuição"); }
+}
+
+void Expression() : {} {
+  AddExpr()
+}
+
+void AddExpr() : {} {
+  MultExpr() ( ( <PLUS> | <MINUS> ) MultExpr() )*
+}
+
+void MultExpr() : {} {
+  LogicExpr() ( ( <MULT> | <DIV> ) LogicExpr() )*
+}
+
+void LogicExpr() : {} {
+  LogicTerm() ( ( <OR> ) LogicTerm() )*
+}
+
+
+void LogicTerm() : {} {
+  LogicFactor() ( ( <AND> ) LogicFactor() )*
+}
+
+void LogicFactor() : {} {
+  [ <NOT> ] Term() ( ( <EQEQ> | <LT> | <GT> | <LE> | <GE> ) Term() )?
+}
+
+void Term() : {} {
+    <NUMBER>
+  | LOOKAHEAD(2) FunctionExpr()
+  | <ID>
+  | <STRING_LITERAL>
+  | <TRUE>
+  | <FALSE>
+  | <LPAREN> Expression() <RPAREN>
+}
+void FunctionExpr() : {} {
+  <ID> <LPAREN> [ ArgList() ] <RPAREN>
+}
+
+
+void SimpleAssignmentExpr() : {} {
+  <ID>
+  (
+    <EQ> Expression()
+  |
+    <PLUSPLUS>
+  |
+    <MINUSMINUS>
+  )
+}
+
+void Input() : {} {
+  ( <GETINT> | <GETTEXT> ) <LPAREN> <ID> <RPAREN> <SEMI>
+  { System.out.println("Reconheceu entrada de dados"); }
+}
+
+void Output() : {} {
+  <WRITE> <LPAREN> OutputExpr() <RPAREN> <SEMI>
+  { System.out.println("Reconheceu saída de dados"); }
+}
+
+void OutputExpr() : {} {
+  OutputTerm() ( <PLUS> OutputTerm() )*
+}
+
+void OutputTerm() : {} {
+  <STRING_LITERAL> | <ID> | <NUMBER>
+}
+
+void IfStatement() : {} {
+  <IF> <LPAREN> Expression() <RPAREN> Block()
+  (
+    LOOKAHEAD(2) <ELSE> IfStatement()
+  |
+    <ELSE> Block()
+  )?
+  { System.out.println("Reconheceu if/else"); }
+}
+
+
+
+void WhileLoop() : {} {
+  <WHILE> <LPAREN> Expression() <RPAREN> Block()
+  { System.out.println("Reconheceu while"); }
+}
+
+void ForLoop() : {} {
+  <FOR> <LPAREN> (VariableDecl() | Assignment()) Expression() <SEMI> SimpleAssignmentExpr() <RPAREN> Block()
+  { System.out.println("Reconheceu for"); }
+}
+
+void ForeachLoop() : {} {
+  <FOREACH> <LPAREN> ( <INT> | <STRING> | <BOOLEAN> ) <ID> <IN> <ID> <RPAREN> Block()
+  { System.out.println("Reconheceu foreach"); }
+}
+
+void BreakStmt() : {} {
+  <BREAK> <SEMI> { System.out.println("Reconheceu break"); }
+}
+
+void ContinueStmt() : {} {
+  <CONTINUE> <SEMI> { System.out.println("Reconheceu continue"); }
+}
+
+void FunctionDecl() : {} {
+  ( <VOID> | <INT> | <STRING> | <BOOLEAN> ) <ID> <LPAREN> [ ParamList() ] <RPAREN> Block()
+  { System.out.println("Reconheceu função"); }
+}
+
+void ParamList() : {} {
+  Param() ( <COMMA> Param() )*
+}
+
+void Param() : {} {
+  ( <INT> | <STRING> | <BOOLEAN> ) <ID>
+}
+
+void FunctionCall() : {} {
+  <ID> <LPAREN> [ ArgList() ] <RPAREN> <SEMI>
+  { System.out.println("Reconheceu chamada de função"); }
+}
+
+void ArgList() : {} {
+  ( <ID> | <NUMBER> | <STRING_LITERAL> | <TRUE> | <FALSE> ) ( <COMMA> ( <ID> | <NUMBER> | <STRING_LITERAL> | <TRUE> | <FALSE> ) )*
+}
+
+void ReturnStmt() : {} {
+<RETURN> Expression() <SEMI>
+  { System.out.println("Reconheceu return"); }
+}

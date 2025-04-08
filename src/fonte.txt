@@ -1,0 +1,8 @@
+int main() {
+  olaMundo();
+  return 0;
+}
+
+void outra() {
+  // função sem relação
+}
