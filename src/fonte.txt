@@ -1,8 +1,79 @@
+#include <utils>
+#include <io>
+
+// Programa completo que testa TODOS os tokens, comandos e estruturas da MiniLang
+
 int main() {
-  olaMundo();
+  // Declaração de variáveis com todos os tipos
+  const int LIMITE = 3;
+  int i = 0;
+  int a = 5;
+  int b = 10;
+  int resultado;
+  string nome = "MiniLang";
+  string texto;
+  boolean ativo = true;
+  boolean valido = false;
+
+  // Entrada de dados
+  getInt(a);
+  getText(texto);
+
+  // Operadores aritméticos, lógicos e relacionais
+  resultado = (a + b) * (b - a) / 2;
+  resultado++;
+  resultado--;
+
+  // Estrutura de decisão completa com else if
+  if (a == b) {
+    write("A igual a B");
+  } else if (a > b) {
+    write("A maior que B");
+  } else {
+    write("A menor que B");
+  }
+
+  // Estrutura de repetição: for com if/else e break/continue
+  for (i = 0; i < LIMITE; i++) {
+    if (i == 1) {
+      continue;
+    } else if (i == 2) {
+      break;
+    }
+    write("Valor de i: " + i);
+  }
+
+  // Estrutura de repetição: while
+  while (i < 5) {
+    write("While rodando: " + i);
+    i++;
+  }
+
+  // Foreach com string recebida por input
+  string nomes;
+  getText(nomes);
+
+  foreach (string nome in nomes) {
+    saudacao(nome);
+  }
+
+  // Chamada de função com retorno
+  resultado = somar(a, b);
+  write("Soma final: " + resultado);
+
   return 0;
 }
 
-void outra() {
-  // função sem relação
+// Procedimento void com parâmetro
+void saudacao(string nome) {
+  if (nome == "admin") {
+    write("Olá, administrador!");
+  } else {
+    write("Olá, " + nome);
+  }
+}
+
+// Função com retorno int
+int somar(int x, int y) {
+  return x + y;
 }

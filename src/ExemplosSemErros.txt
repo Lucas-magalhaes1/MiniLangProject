@@ -1,0 +1,147 @@
+//Mini sistema de classificação de idade com entrada e funções
+
+#include <io>
+#include <utils>
+
+int main() {
+  int idade;
+  getInt(idade);
+
+  string classificacao = classificarIdade(idade);
+  write("Classificação: " + classificacao);
+
+  return 0;
+}
+
+string classificarIdade(int idade) {
+  if (idade < 13) {
+    return "Criança";
+  } else if (idade < 18) {
+    return "Adolescente";
+  } else if (idade < 60) {
+    return "Adulto";
+  } else {
+    return "Idoso";
+  }
+}
+
+
+
+
+
+//Contadores com for, while, break, continue, boolean, const
+
+int main() {
+  const int LIMITE = 5;
+  int i = 0;
+  boolean ativo = true;
+
+  for (i = 0; i < LIMITE; i++) {
+    if (i == 2) {
+      continue;
+    }
+    write("Contando i: " + i);
+  }
+
+  i = 0;
+  while (ativo) {
+    write("While i: " + i);
+    i++;
+
+    if (i == 3) {
+      break;
+    }
+  }
+
+  return 0;
+}
+
+
+
+
+
+//Foreach com entrada, função void, operadores, lógica, string e boolean
+
+int main() {
+  string nomes;
+  getText(nomes);
+
+  foreach (string nome in nomes) {
+    verificar(nome);
+  }
+
+  return 0;
+}
+
+void verificar(string nome) {
+  boolean especial = false;
+
+  if (nome == "admin" || nome == "root") {
+    especial = true;
+  }
+
+  if (especial) {
+    write("Acesso liberado para: " + nome);
+  } else {
+    write("Usuário comum: " + nome);
+  }
+}
+
+
+
+
+
+//Validador de usuários e contagem com múltiplas estruturas aninhadas
+
+#include <validadores>
+#include <textos>
+
+int main() {
+  const int MAX = 3;
+  int tentativas = 0;
+  string usuarios;
+  getText(usuarios);
+
+  foreach (string user in usuarios) {
+    tentativas = 0;
+
+    for (int i = 0; i < MAX; i++) {
+      write("Tentativa " + i + " para " + user);
+      
+      if (!validar(user)) {
+        write("Usuário inválido: " + user);
+        tentativas++;
+        continue;
+      }
+
+      if (tentativas == 0) {
+        write("Acesso concedido para: " + user);
+        break;
+      } else if (tentativas == 1) {
+        write("Acesso liberado com advertência");
+        break;
+      } else {
+        write("Muitas tentativas. Acesso negado.");
+        break;
+      }
+    }
+  }
+
+  return 0;
+}
+
+boolean validar(string nome) {
+  if (nome == "admin" || nome == "root") {
+    return true;
+  }
+
+  if (nome == "") {
+    return false;
+  }
+
+  return true;
+}
+
+
+
+
