@@ -2,6 +2,7 @@
 
 MiniLang é uma linguagem de programação simples, criada com o objetivo de praticar conceitos de compiladores usando JavaCC. A linguagem é inspirada em linguagens como **C** e **Java**, com sintaxe estruturada, comandos familiares e suporte a expressões aritméticas, lógicas, controle de fluxo, entrada/saída, funções e muito mais.
 
+
 ---
 
 ## ✅ Recursos suportados pela linguagem
@@ -167,6 +168,18 @@ Aprendi a estruturar uma gramática usando o JavaCC e a compreender melhor o fun
 As maiores dificuldades estiveram na implementação e ajuste das expressões, principalmente na inclusão dos operadores aritméticos (`+`, `-`, `*`, etc.) dentro das regras de `Expression()`, pois inicialmente a linguagem só reconhecia expressões lógicas simples. Também foi necessário criar uma estrutura com precedência correta dos operadores e adicionar suporte a chamadas de função dentro de expressões, o que exigiu atenção com ambiguidade nos tokens como `<ID>` e chamadas com `()`.
 
 Outro ponto trabalhoso foi garantir que todos os comandos da linguagem (como `for`, `while`, `foreach`, `break`, `continue`, `if`, `else`, `return`, etc.) fossem testados em conjunto, sem causar conflitos na gramática. Porém, ao final, foi possível montar um interpretador sintático robusto e funcional, cobrindo todos os requisitos propostos.
+
+---
+
+## 📂 Documentação e Exemplos Direto no src
+
+
+📄 [Aprendizado e Dificuldades.pdf](MiniLangProject/src/Aprendizado%20e%20Dificuldades.pdf) – Relato de dificuldades e aprendizado do projeto.  
+📄 [Gramatica.pdf](MiniLangProject/src/Gramatica.pdf) – Definição formal da gramática da linguagem.  
+📄 [MINI LANG - DOCUMENTAÇÃO DO USUÁRIO.pdf](MiniLangProject/src/MINI%20LANG%20-%20DOCUMENTAÇÃO%20DO%20USUÁRIO.pdf) – Guia de uso da linguagem MiniLang.  
+📄 [ExemplosSemErros.txt](MiniLangProject/src/ExemplosSemErros.txt) – Exemplos de código sem erros sintáticos.  
+📄 [ExemplosComErros.txt](MiniLangProject/src/ExemplosComErros.txt) – Exemplos de código com erros sintáticos.  
+📄 [fonte.txt](MiniLangProject/src/fonte.txt) – Exemplo de código fonte contendo todos os tokens e estruturas suportadas.  
 
 ---
 
