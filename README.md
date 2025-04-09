@@ -1,6 +1,6 @@
-# 🧠 MiniLang – Linguagem de Programação Didática
+# 🧠 MiniLang – Linguagem de Programação 
 
-MiniLang é uma linguagem de programação simples, criada com o objetivo de praticar conceitos de compiladores usando JavaCC. A linguagem é inspirada em linguagens como **C** e **Java**, com sintaxe estruturada, comandos familiares e suporte a expressões aritméticas, lógicas, controle de fluxo, entrada/saída, funções e muito mais.
+Uma linguagem de programação simples, criada com o objetivo de praticar conceitos de compiladores usando JavaCC. A linguagem é inspirada em linguagens como **C** e **Java**, com sintaxe estruturada, comandos familiares e suporte a expressões aritméticas, lógicas, controle de fluxo, entrada/saída, funções e muito mais.
 
 
 ---
@@ -9,7 +9,7 @@ MiniLang é uma linguagem de programação simples, criada com o objetivo de pra
 
 | Funcionalidade                 | Exemplo comum             | MiniLang suporta? | Como usar em MiniLang                  |
 |-------------------------------|----------------------------|-------------------|----------------------------------------|
-| Comentários                   | `//`, `/* */`              | ✅                | `// comentário`                        |
+| Comentários                   | `//`,              | ✅                | `// comentário`                        |
 | Decisão                       | `if`, `else`               | ✅                | `if (cond) { ... } else { ... }`       |
 | Repetição                     | `for`, `while`, `foreach`  | ✅                | `for (...)`, `while (...)`, `foreach`  |
 | Declaração de variáveis       | `int`, `text`              | ✅                | `int x = 10;`                          |
