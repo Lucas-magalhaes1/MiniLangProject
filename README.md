@@ -1,4 +1,4 @@
-# 🧠 MiniLang – Linguagem de Programação 
+# MiniLang – Linguagem de Programação 
 
 Uma linguagem de programação simples, criada com o objetivo de praticar conceitos de compiladores usando JavaCC. A linguagem é inspirada em linguagens como **C** e **Java**, com sintaxe estruturada, comandos familiares e suporte a expressões aritméticas, lógicas, controle de fluxo, entrada/saída, funções e muito mais.
 
